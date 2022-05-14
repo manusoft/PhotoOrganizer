@@ -107,4 +107,9 @@ public sealed partial class MainWindow : Window
 
         return format;
     }
+
+    private void PhotosList_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args)
+    {
+        ViewModel?.PreparePhotoCommand?.ExecuteAsync(args.Index);
+    }
 }

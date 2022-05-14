@@ -98,6 +98,7 @@
                               BorderBrush="DimGray"
                               BorderThickness="0,1,0,0">
                     <ItemsRepeater x:Name="PhotosList"
+                                   ElementPrepared="PhotosList_ElementPrepared"
                                    ItemsSource="{x:Bind ViewModel.Photos, Mode=OneWay}">
                         <ItemsRepeater.Layout>
                             <StackLayout Orientation="Vertical"/>
