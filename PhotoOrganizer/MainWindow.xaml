@@ -5,7 +5,8 @@
     xmlns:local="using:PhotoOrganizer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:viewmodels="using:PhotoOrganizer.ViewModels"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource SystemAccentColorLight1 }">
@@ -68,7 +69,7 @@
             </Grid>
         </Grid>
         <!--#endregion-->
-        
+
         <!--#region Items View-->
         <Grid Grid.Row="2"
               Margin="10,10,10,10">
@@ -77,7 +78,7 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Input Panel Left Side-->
             <Grid Grid.Column="0"
                   BorderBrush="Gray"
@@ -85,19 +86,79 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>                
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0"
+                      Margin="5,0,5,0">
+                    <TextBlock FontSize="15"
+                               FontWeight="Bold"
+                               Text="Input"/>
+                </Grid>
+                <ScrollViewer Grid.Row="1"
+                              BorderBrush="DimGray"
+                              BorderThickness="0,1,0,0">
+                    <ItemsRepeater x:Name="PhotosList"
+                                   ItemsSource="{x:Bind ViewModel.Photos, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Orientation="Vertical"/>
+                        </ItemsRepeater.Layout>
+                        <DataTemplate x:DataType="viewmodels:PhotoViewModel">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--Thumbnail-->
+                                <controls:ImageEx Grid.Column="0"
+                                                  Width="200"
+                                                  PlaceholderSource="Assets/pinterest-click.gif"
+                                                  PlaceholderStretch="Uniform"
+                                                  Source="{x:Bind Thumbnail, Mode=OneWay}"/>
+                                <!--Details-->
+                                <StackPanel Grid.Column="1"
+                                            Padding="10,0,0,0"
+                                            BorderBrush="DimGray"
+                                            BorderThickness="0,0,0,1"
+                                            Orientation="Vertical">
+                                    <!--Input File Name-->
+                                    <TextBlock FontSize="16"
+                                               FontWeight="Bold"
+                                               Text="{x:Bind InputFileName, Mode=OneWay}"/>
+                                    <!--Input File Path-->
+                                    <controls:HeaderedContentControl Header="Input">
+                                        <TextBlock Text="{x:Bind InputFilePath, Mode=OneWay}"/>
+                                    </controls:HeaderedContentControl>
+                                    <!--Output File Path-->
+                                    <controls:HeaderedContentControl Header="Output">
+                                        <TextBlock Text="{x:Bind OutputFilePath, Mode=OneWay}"/>
+                                    </controls:HeaderedContentControl>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--Date Taken-->
+                                        <controls:HeaderedContentControl Header="Date Taken">
+                                            <TextBlock Text="{x:Bind DateTaken, Mode=OneWay}"/>
+                                        </controls:HeaderedContentControl>
+                                    </StackPanel>
+                                    <!--File Size-->
+                                    <controls:HeaderedContentControl Header="File Size">
+                                        <TextBlock Text="{x:Bind FileSize, Mode=OneWay}"/>
+                                    </controls:HeaderedContentControl>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsRepeater>
+                </ScrollViewer>
             </Grid>
-            
+
             <!--Grid Spitter-->
             <controls:GridSplitter Grid.Column="1"
-                                   CursorBehavior="ChangeOnSplitterHover"
-                                   ResizeBehavior="BasedOnAlignment"
-                                   ResizeDirection="Columns"
-                                   Opacity="0"/>
+                               CursorBehavior="ChangeOnSplitterHover"
+                               ResizeBehavior="BasedOnAlignment"
+                               ResizeDirection="Columns"
+                               Opacity="0"/>
             <!--Output Panel Right Side-->
             <Grid Grid.Column="2"
-                  BorderBrush="Gray"
-                  BorderThickness="1">
+              BorderBrush="Gray"
+              BorderThickness="1">
                 <!--<Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -167,7 +228,7 @@
                             VerticalContentAlignment="Bottom"
                             Content="..."/>
                 </Grid>
-                
+
                 <!--Output Folder Structure-->
                 <controls:HeaderedContentControl Header="Output Folder Structure">
                     <StackPanel Orientation="Horizontal">

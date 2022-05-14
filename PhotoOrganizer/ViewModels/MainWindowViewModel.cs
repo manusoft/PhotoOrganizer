@@ -30,7 +30,7 @@ public partial class MainWindowViewModel
     [ICommand]
     private async Task LoadPhotosAsync(string? inputFolderPath, CancellationToken cancelationToken)
     {
-        if (LoadPhotosCommand.IsRunning || inputFolderPath is not null) return;
+        if (LoadPhotosCommand.IsRunning || inputFolderPath is null) return;
 
         StorageFolder? folder = await StorageFolder.GetFolderFromPathAsync(inputFolderPath);
 
@@ -56,6 +56,8 @@ public partial class MainWindowViewModel
             if (cancelationToken.IsCancellationRequested is true) break;
 
             PhotoViewModel photoViewModel = new(file);
+
+            Console.WriteLine(file.ToString());
 
             photoViewModels.Add(photoViewModel);
         }
