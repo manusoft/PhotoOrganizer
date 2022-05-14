@@ -68,6 +68,44 @@
             </Grid>
         </Grid>
         <!--#endregion-->
+        
+        <!--#region Items View-->
+        <Grid Grid.Row="2"
+              Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--Input Panel Left Side-->
+            <Grid Grid.Column="0"
+                  BorderBrush="Gray"
+                  BorderThickness="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>                
+            </Grid>
+            
+            <!--Grid Spitter-->
+            <controls:GridSplitter Grid.Column="1"
+                                   CursorBehavior="ChangeOnSplitterHover"
+                                   ResizeBehavior="BasedOnAlignment"
+                                   ResizeDirection="Columns"
+                                   Opacity="0"/>
+            <!--Output Panel Right Side-->
+            <Grid Grid.Column="2"
+                  BorderBrush="Gray"
+                  BorderThickness="1">
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>-->
+            </Grid>
+
+        </Grid>
+        <!--#region -->
 
         <!--#region Start Setting Dialog-->
         <ContentDialog x:Name="dialogSettings"
