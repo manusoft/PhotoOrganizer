@@ -20,14 +20,16 @@
                     Grid.Row="0"
                     Background="{ThemeResource SystemAccentColorLight1}"
                     Orientation="Horizontal">
-            <Image Source="Assets/google_photos_48px.png"/>
+            <Image Source="Assets/google_photos_48px.png"
+                   Height="22"
+                   Width="22"/>
             <TextBlock Margin="10,0,0,0" 
                        VerticalAlignment="Center"
                        FontWeight="SemiBold"
                        Text="{x:Bind Title}"/>
         </StackPanel>
         <!--#endregion-->
-        
+
         <!--#region Operations-->
         <Grid Grid.Row="1"
               Margin="10"
@@ -37,7 +39,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Start Button-->
             <Button x:Name="btnStart"
                     Grid.Column="0"
@@ -64,8 +66,116 @@
                          Text="{x:Bind ViewModel.OutputFolder.Path, Mode=OneWay}"
                          HorizontalContentAlignment="Stretch"/>
             </Grid>
-
         </Grid>
         <!--#endregion-->
+
+        <!--#region Start Setting Dialog-->
+        <ContentDialog x:Name="dialogSettings"
+                       PrimaryButtonText="Start"
+                       CloseButtonText="Cancel"
+                       Title="Settings">
+            <!--Title Template-->
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="32"
+                               Width="32"
+                               Source="Assets/google_photos_48px.png"/>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Start Settings"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <!--Primary Button Style-->
+            <ContentDialog.PrimaryButtonStyle>
+                <Style TargetType="Button">
+                    <Setter Property="Background" 
+                            Value="{ThemeResource SystemAccentColorDark1}"/>
+                </Style>
+            </ContentDialog.PrimaryButtonStyle>
+
+            <StackPanel Orientation="Vertical"
+                        Spacing="20">
+                <Grid ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Select Input Folder-->
+                    <TextBox Header="Select Input Folder" 
+                             Grid.Column="0"     
+                             x:Name="txtInputFolder"
+                             IsReadOnly="True"/>
+                    <Button Grid.Column="1" 
+                            x:Name="btnInputFolder"
+                            Click="btnInputFolder_Click"
+                            Content="..."/>
+                </Grid>
+                <Grid ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Select Output Folder-->
+                    <TextBox Header="Select Output Folder" 
+                             Grid.Column="0"     
+                             x:Name="txtOutputFolder"
+                             IsReadOnly="True"/>
+                    <Button Grid.Column="1" 
+                            x:Name="btnOutputFolder"
+                            Click="btnOutputFolder_Click"
+                            VerticalContentAlignment="Bottom"
+                            Content="..."/>
+                </Grid>
+                
+                <!--Output Folder Structure-->
+                <controls:HeaderedContentControl Header="Output Folder Structure">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="chkCreatedYear"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Year"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedMonth"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Month"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedDay"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Day"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedDate"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Date"
+                                  IsChecked="True"/>
+                    </StackPanel>
+                </controls:HeaderedContentControl>
+                <!--Output Example-->
+                <controls:HeaderedContentControl Header="Output Example">
+                    <TextBlock x:Name="ExampleTextBlock"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap"/>
+                </controls:HeaderedContentControl>
+
+                <!--Name Conflit Settings-->
+                <RadioButtons Header="File Name Conflits"
+                              MaxColumns="3">
+                    <RadioButton Content="Add suffix"
+                                 IsChecked="True"
+                                 Tag="addSuffix"/>
+                    <RadioButton Content="Skip"
+                                 Tag="skip"/>
+                </RadioButtons>
+                <!--Simulation Settings-->
+                <ToggleSwitch x:Name="toggleSimulation"
+                              Header="Simulation (No file copies)"
+                              OffContent="Disabled"
+                              OnContent="Enabled"/>
+
+            </StackPanel>
+        </ContentDialog>
+        <!--#region -->
+
     </Grid>
 </Window>
