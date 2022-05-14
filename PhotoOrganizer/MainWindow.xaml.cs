@@ -10,9 +10,6 @@ using Windows.Storage.Pickers;
 
 namespace PhotoOrganizer;
 
-/// <summary>
-/// An empty window that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class MainWindow : Window
 {
     public MainWindow()
@@ -38,10 +35,10 @@ public sealed partial class MainWindow : Window
     {
         ContentDialogResult result = await dialogSettings.ShowAsync();
 
-        if(result is ContentDialogResult.Primary && ViewModel is not null)
+        if (result is ContentDialogResult.Primary && ViewModel is not null)
         {
-            ViewModel.InputFolder = selectedInputFolder;
-            ViewModel.OutputFolder = selectedOutputFolder;
+            ViewModel.UpdateInputFolderPathCommand?.Execute(selectedInputFolder?.Path);
+            ViewModel.UpdateOutputFolderPathCommand?.Execute(selectedOutputFolder?.Path);
         }
     }
 
@@ -58,18 +55,18 @@ public sealed partial class MainWindow : Window
     {
         StorageFolder? folder = await SelectFolderAsync();
 
-        if(folder is not null && ViewModel is not null)
+        if (folder is not null && ViewModel is not null)
         {
             selectedInputFolder = folder;
             txtInputFolder.Text = folder.Path;
-        } 
+        }
     }
 
     private async void btnOutputFolder_Click(object sender, RoutedEventArgs e)
     {
         StorageFolder? folder = await SelectFolderAsync();
 
-        if (folder is not null && ViewModel is not null)
+        if (folder is not null)
         {
             selectedOutputFolder = folder;
             txtOutputFolder.Text = folder.Path;
@@ -82,12 +79,12 @@ public sealed partial class MainWindow : Window
     {
         string example = @"[Output]";
 
-        if(selectedOutputFolder?.Path.Length>0) example = selectedOutputFolder.Path;
+        if (selectedOutputFolder?.Path.Length>0) example = selectedOutputFolder.Path;
 
         string dateFormat = CreateDateFolderFormat();
 
         if (dateFormat.Length>0) example += DateTime.Now.ToString(dateFormat, CultureInfo.InvariantCulture);
-           
+
         example += @"\[FileName]";
 
         ExampleTextBlock.Text = example;
