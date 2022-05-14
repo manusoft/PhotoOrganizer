@@ -138,11 +138,15 @@
                                         <controls:HeaderedContentControl Header="Date Taken">
                                             <TextBlock Text="{x:Bind DateTaken, Mode=OneWay}"/>
                                         </controls:HeaderedContentControl>
+                                        <!--File Size-->
+                                        <controls:HeaderedContentControl Header="File Size">
+                                            <TextBlock Text="{x:Bind FileSize, Mode=OneWay}"/>
+                                        </controls:HeaderedContentControl>
                                     </StackPanel>
-                                    <!--File Size-->
+                                    <!--File Size--><!--
                                     <controls:HeaderedContentControl Header="File Size">
                                         <TextBlock Text="{x:Bind FileSize, Mode=OneWay}"/>
-                                    </controls:HeaderedContentControl>
+                                    </controls:HeaderedContentControl>-->
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
