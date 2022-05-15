@@ -5,409 +5,176 @@
     xmlns:local="using:PhotoOrganizer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
-    xmlns:viewmodels="using:PhotoOrganizer.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d">
 
-    <Grid
-        RowDefinitions="28,Auto,*"
-        Background="{ThemeResource SystemControlAccentAcrylicWindowAccentMediumHighBrush}">
-
-        <!--#region Resources-->
-        <Grid.Resources>
-            <!--HeaderedContentControl Style for general use-->
-            <Style TargetType="controls:HeaderedContentControl">
-                <Setter Property="HeaderTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock FontWeight="SemiBold" Text="{Binding}"/>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            </Style>
-
-            <!--HeaderedContentControl Style for PhotoViewModel-->
-            <Style 
-                x:Key="HeaderedContentControlPhotoViewModel"
-                TargetType="controls:HeaderedContentControl">
-                <Setter Property="HeaderTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock 
-                                FontWeight="SemiBold" 
-                                Text="{Binding}"/>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter 
-                    Property="HorizontalContentAlignment" 
-                    Value="Stretch"/>
-                <Setter 
-                    Property="FontSize" 
-                    Value="12"/>
-                <Setter 
-                    Property="Orientation" 
-                    Value="Vertical"/>
-                <Setter 
-                    Property="Margin" 
-                    Value="15,0,0,0"/>
-            </Style>
-        </Grid.Resources>
-        <!--#endregion-->
+    <Grid Background="{ThemeResource SystemAccentColorLight1 }">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <!--#region TitleBar-->
-        <StackPanel 
-            x:Name="TitleBar"
-            Grid.Row="0"
-            Background="{ThemeResource SystemAccentColorLight1}"
-            Orientation="Horizontal">
-            <Image 
-                Source="Assets/google_photos_48px.png"
-                Height="22"
-                Width="22"/>
-            <TextBlock 
-                Margin="10,0,0,0" 
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Text="{x:Bind Title}"/>
+        <StackPanel x:Name="TitleBar"
+                    Grid.Row="0"
+                    Background="{ThemeResource SystemAccentColorLight1}"
+                    Orientation="Horizontal">
+            <Image Source="Assets/google_photos_48px.png"
+                   Height="22"
+                   Width="22"/>
+            <TextBlock Margin="10,0,0,0" 
+                       VerticalAlignment="Center"
+                       FontWeight="SemiBold"
+                       Text="{x:Bind Title}"/>
         </StackPanel>
         <!--#endregion-->
 
         <!--#region Operations-->
-        <Grid
-            ColumnDefinitions ="Auto,*"
-            Grid.Row="1"
-            Margin="10"
-            ColumnSpacing="5"
-            RowSpacing="5">
+        <Grid Grid.Row="1"
+              Margin="10"
+              ColumnSpacing="5"
+              RowSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
             <!--Start Button-->
-            <Button 
-                x:Name="btnStart"
-                Grid.Column="0"
-                Background="{ThemeResource SystemAccentColorDark1}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Content="Start"
-                Click="btnStart_Click"/>
-            <Grid 
-                RowDefinitions="Auto,Auto"
-                Grid.Column="1">
-
+            <Button x:Name="btnStart"
+                    Grid.Column="0"
+                    Background="{ThemeResource SystemAccentColorDark1}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Content="Start"
+                    Click="btnStart_Click"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <!--Input Folder-->
-                <TextBox 
-                    Grid.Row="0" 
-                    Header="Input Folder"
-                    IsReadOnly="True"
-                    Text="{x:Bind ViewModel.InputFolder.Path, Mode=OneWay}"
-                    HorizontalContentAlignment="Stretch"/>
+                <TextBox Grid.Row="0" 
+                         Header="Input Folder"
+                         IsReadOnly="True"
+                         Text="{x:Bind ViewModel.InputFolder.Path, Mode=OneWay}"
+                         HorizontalContentAlignment="Stretch"/>
                 <!--Output Folder-->
-                <TextBox 
-                    Grid.Row="1"
-                    Header="Output Folder"
-                    IsReadOnly="True"
-                    Text="{x:Bind ViewModel.OutputFolder.Path, Mode=OneWay}"
-                    HorizontalContentAlignment="Stretch"/>
+                <TextBox Grid.Row="1"
+                         Header="Output Folder"
+                         IsReadOnly="True"
+                         Text="{x:Bind ViewModel.OutputFolder.Path, Mode=OneWay}"
+                         HorizontalContentAlignment="Stretch"/>
             </Grid>
         </Grid>
         <!--#endregion-->
 
-        <!--#region Items View-->
-        <Grid Grid.Row="2"
-              ColumnDefinitions ="*,5,*"
-              Margin="10,10,10,10">
-
-            <!--Input Panel Left Side-->
-            <Grid 
-                Grid.Column="0"
-                RowDefinitions="Auto,*"
-                BorderBrush="Gray"
-                BorderThickness="1">
-
-                <Grid 
-                    Grid.Row="0"
-                    ColumnDefinitions="Auto,*"
-                    Margin="5,0,5,0">
-                    
-                    <TextBlock 
-                        Grid.Column="0"
-                        FontSize="15"
-                        FontWeight="Bold"
-                        Text="Input"/>
-                    <TextBlock 
-                        Grid.Column="1"
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Bottom"
-                        Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay}">
-                        <Run Text="("/>
-                        <Run Text="{x:Bind ViewModel.LoadedFilesCount, Mode=OneWay}"/>
-                        <Run Text="/"/>
-                        <Run Text="{x:Bind ViewModel.FoundFilesCount, Mode=OneWay}"/>
-                        <Run Text=")"/>
-                    </TextBlock>
-                </Grid>
-                <ScrollViewer 
-                    Grid.Row="1"
-                    BorderBrush="DimGray"
-                    BorderThickness="0,1,0,0">
-                    <ItemsRepeater 
-                        x:Name="PhotosList"
-                        ElementPrepared="PhotosList_ElementPrepared"
-                        ItemsSource="{x:Bind ViewModel.Photos, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <StackLayout Orientation="Vertical"/>
-                        </ItemsRepeater.Layout>
-                        <DataTemplate x:DataType="viewmodels:PhotoViewModel">
-                            <Grid 
-                                ColumnDefinitions="Auto,*"
-                                Height="120">
-
-                                <!--Thumbnail-->
-                                <controls:ImageEx 
-                                    Grid.Column="0"
-                                    Width="200"
-                                    PlaceholderSource="Assets/pinterest-click.gif"
-                                    PlaceholderStretch="Uniform"
-                                    Source="{x:Bind Thumbnail, Mode=OneWay}"/>
-                                <!--Details-->
-                                <StackPanel 
-                                    Grid.Column="1"
-                                    Padding="10,0,0,0"
-                                    BorderBrush="DimGray"
-                                    BorderThickness="0,0,0,1"
-                                    Orientation="Vertical">
-                                    <!--Input File Name-->
-                                    <TextBlock 
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Text="{x:Bind InputFileName, Mode=OneWay}"/>
-                                    <!--Input File Path-->
-                                    <controls:HeaderedContentControl 
-                                        Header="Input"
-                                        Style="{StaticResource HeaderedContentControlPhotoViewModel}">
-                                        <TextBlock Text="{x:Bind InputFilePath, Mode=OneWay}"/>
-                                    </controls:HeaderedContentControl>
-                                    <!--Output File Path-->
-                                    <controls:HeaderedContentControl 
-                                        Header="Output"
-                                        Style="{StaticResource HeaderedContentControlPhotoViewModel}">
-                                        <TextBlock Text="{x:Bind OutputFilePath, Mode=OneWay}"/>
-                                    </controls:HeaderedContentControl>
-                                    <StackPanel Orientation="Horizontal">
-                                        <!--Date Taken-->
-                                        <controls:HeaderedContentControl 
-                                            Header="Date Taken"
-                                            Style="{StaticResource HeaderedContentControlPhotoViewModel}">
-                                            <TextBlock Text="{x:Bind DateTaken, Mode=OneWay}"/>
-                                        </controls:HeaderedContentControl>
-                                        <!--File Size-->
-                                        <controls:HeaderedContentControl 
-                                            Header="File Size"
-                                            Style="{StaticResource HeaderedContentControlPhotoViewModel}">
-                                            <TextBlock Text="{x:Bind FileSize, Mode=OneWay}"/>
-                                        </controls:HeaderedContentControl>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsRepeater>
-                </ScrollViewer>
-            </Grid>
-
-            <!--Grid Spitter-->
-            <controls:GridSplitter 
-                Grid.Column="1"
-                CursorBehavior="ChangeOnSplitterHover"
-                ResizeBehavior="BasedOnAlignment"
-                ResizeDirection="Columns"
-                Opacity="0"/>
-            <!--Output Panel Right Side-->
-            <Grid 
-                Grid.Column="2"
-                BorderBrush="Gray"
-                BorderThickness="1">
-            </Grid>
-
-        </Grid>
-        <!--#region -->
-
         <!--#region Start Setting Dialog-->
-        <ContentDialog 
-            x:Name="dialogSettings"
-            PrimaryButtonText="Start"
-            CloseButtonText="Cancel"
-            Title="Settings">
+        <ContentDialog x:Name="dialogSettings"
+                       PrimaryButtonText="Start"
+                       CloseButtonText="Cancel"
+                       Title="Settings">
             <!--Title Template-->
             <ContentDialog.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image 
-                            Height="32"
-                            Width="32"
-                            Source="Assets/google_photos_48px.png"/>
-                        <TextBlock 
-                            VerticalAlignment="Center"
-                            Text="Start Settings"/>
+                        <Image Height="32"
+                               Width="32"
+                               Source="Assets/google_photos_48px.png"/>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Start Settings"/>
                     </StackPanel>
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
             <!--Primary Button Style-->
             <ContentDialog.PrimaryButtonStyle>
                 <Style TargetType="Button">
-                    <Setter 
-                        Property="Background" 
-                        Value="{ThemeResource SystemAccentColorDark1}"/>
+                    <Setter Property="Background" 
+                            Value="{ThemeResource SystemAccentColorDark1}"/>
                 </Style>
             </ContentDialog.PrimaryButtonStyle>
 
-            <StackPanel 
-                Orientation="Vertical"
-                Spacing="20">
-                <Grid 
-                    ColumnDefinitions="*,Auto"
-                    ColumnSpacing="5">
+            <StackPanel Orientation="Vertical"
+                        Spacing="20">
+                <Grid ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
                     <!--Select Input Folder-->
-                    <TextBox
-                        Header="Select Input Folder" 
-                        Grid.Column="0"     
-                        x:Name="txtInputFolder"
-                        IsReadOnly="True"/>
-                    <Button 
-                        Grid.Column="1" 
-                        x:Name="btnInputFolder"
-                        Click="btnInputFolder_Click"
-                        Content="..."
-                        VerticalAlignment="Bottom"/>
+                    <TextBox Header="Select Input Folder" 
+                             Grid.Column="0"     
+                             x:Name="txtInputFolder"
+                             IsReadOnly="True"/>
+                    <Button Grid.Column="1" 
+                            x:Name="btnInputFolder"
+                            Click="btnInputFolder_Click"
+                            Content="..."/>
                 </Grid>
-                <Grid 
-                    ColumnDefinitions="*,Auto"
-                    ColumnSpacing="5">
+                <Grid ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
                     <!--Select Output Folder-->
-                    <TextBox 
-                        Header="Select Output Folder" 
-                        Grid.Column="0"     
-                        x:Name="txtOutputFolder"
-                        IsReadOnly="True"/>
-                    <Button 
-                        Grid.Column="1" 
-                        x:Name="btnOutputFolder"
-                        Click="btnOutputFolder_Click"                        
-                        Content="..."
-                        VerticalAlignment="Bottom"/>
+                    <TextBox Header="Select Output Folder" 
+                             Grid.Column="0"     
+                             x:Name="txtOutputFolder"
+                             IsReadOnly="True"/>
+                    <Button Grid.Column="1" 
+                            x:Name="btnOutputFolder"
+                            Click="btnOutputFolder_Click"
+                            VerticalContentAlignment="Bottom"
+                            Content="..."/>
                 </Grid>
-
+                
                 <!--Output Folder Structure-->
                 <controls:HeaderedContentControl Header="Output Folder Structure">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox 
-                            x:Name="chkCreatedYear"
-                            Click="FolderStructureCheckBox_Click"
-                            Content="Year"
-                            IsChecked="True"/>
-                        <CheckBox 
-                            x:Name="chkCreatedMonth"
-                            Click="FolderStructureCheckBox_Click"
-                            Content="Month"
-                            IsChecked="True"/>
-                        <CheckBox 
-                            x:Name="chkCreatedDay"
-                            Click="FolderStructureCheckBox_Click"
-                            Content="Day"
-                            IsChecked="True"/>
-                        <CheckBox 
-                            x:Name="chkCreatedDate"
-                            Click="FolderStructureCheckBox_Click"
-                            Content="Date"
-                            IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedYear"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Year"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedMonth"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Month"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedDay"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Day"
+                                  IsChecked="True"/>
+                        <CheckBox x:Name="chkCreatedDate"
+                                  Click="FolderStructureCheckBox_Click"
+                                  Content="Date"
+                                  IsChecked="True"/>
                     </StackPanel>
                 </controls:HeaderedContentControl>
                 <!--Output Example-->
                 <controls:HeaderedContentControl Header="Output Example">
-                    <TextBlock 
-                        x:Name="ExampleTextBlock"
-                        VerticalAlignment="Center"
-                        TextWrapping="Wrap"/>
+                    <TextBlock x:Name="ExampleTextBlock"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap"/>
                 </controls:HeaderedContentControl>
 
                 <!--Name Conflit Settings-->
-                <RadioButtons 
-                    Header="File Name Conflits"
-                    MaxColumns="3">
-                    <RadioButton 
-                        Content="Add suffix"
-                        IsChecked="True"
-                        Tag="addSuffix"/>
-                    <RadioButton 
-                        Content="Skip"
-                        Tag="skip"/>
+                <RadioButtons Header="File Name Conflits"
+                              MaxColumns="3">
+                    <RadioButton Content="Add suffix"
+                                 IsChecked="True"
+                                 Tag="addSuffix"/>
+                    <RadioButton Content="Skip"
+                                 Tag="skip"/>
                 </RadioButtons>
                 <!--Simulation Settings-->
-                <ToggleSwitch
-                    x:Name="toggleSimulation"
-                    Header="Simulation (No file copies)"
-                    OffContent="Disabled"
-                    OnContent="Enabled"/>
+                <ToggleSwitch x:Name="toggleSimulation"
+                              Header="Simulation (No file copies)"
+                              OffContent="Disabled"
+                              OnContent="Enabled"/>
+
             </StackPanel>
         </ContentDialog>
-        <!--#region -->
-        
-        <!--#region Loading Screen-->
-        <Grid            
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            ColumnDefinitions ="*,*,*"
-            Background="Black"
-            Opacity="0.9"
-            Visibility="{x:Bind ViewModel.LoadPhotosCommand.IsRunning, Mode=OneWay}">
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Spacing="10">
-                <!--Message-->
-                <TextBlock
-                    Foreground="White"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="Loading..."/>
-                <!--ProgressBar-->
-                <ProgressBar
-                    x:Name="loadingProgressBar"
-                    Height="30"
-                    Maximum="{x:Bind ViewModel.FoundFilesCount, Mode=OneWay}"
-                    Value="{x:Bind ViewModel.LoadedFilesCount, Mode=OneWay}"/>
-                <!--Counter-->
-                <Grid 
-                    ColumnDefinitions="*,Auto,*"
-                    ColumnSpacing="10">
-                    <TextBlock
-                        Grid.Column="0"
-                        Foreground="White"
-                        HorizontalAlignment="Right"
-                        Text="{x:Bind ViewModel.LoadedFilesCount, Mode=OneWay}"/>
-                    <TextBlock
-                        Grid.Column="1"
-                        Foreground="White"
-                        Text="/"/>
-                    <TextBlock
-                        Grid.Column="2"
-                        Foreground="White"
-                        HorizontalAlignment="Left"
-                        Text="{x:Bind ViewModel.FoundFilesCount, Mode=OneWay}"/>
-                </Grid>
-                <!--Cancel Button-->
-                <Button
-                    x:Name="btnCancel"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="Cancel" 
-                    Click="btnCancel_Click"/>
-            </StackPanel>
-            
-        </Grid>        
         <!--#region -->
 
     </Grid>
