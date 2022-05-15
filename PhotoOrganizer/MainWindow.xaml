@@ -11,7 +11,7 @@
 
     <Grid
         RowDefinitions="28,Auto,*"
-        Background="{ThemeResource SystemAccentColorDark2}">
+        Background="{ThemeResource SystemControlAccentAcrylicWindowAccentMediumHighBrush}">
 
         <!--#region Resources-->
         <Grid.Resources>
@@ -269,7 +269,7 @@
                     ColumnSpacing="5">
 
                     <!--Select Input Folder-->
-                    <TextBox 
+                    <TextBox
                         Header="Select Input Folder" 
                         Grid.Column="0"     
                         x:Name="txtInputFolder"
@@ -294,9 +294,9 @@
                     <Button 
                         Grid.Column="1" 
                         x:Name="btnOutputFolder"
-                        Click="btnOutputFolder_Click"
-                        VerticalContentAlignment="Bottom"
-                        Content="..."/>
+                        Click="btnOutputFolder_Click"                        
+                        Content="..."
+                        VerticalAlignment="Bottom"/>
                 </Grid>
 
                 <!--Output Folder Structure-->

@@ -14,8 +14,6 @@ namespace PhotoOrganizer.ViewModels;
 [ObservableObject]
 public partial class MainWindowViewModel
 {
-    private readonly IThumbnailService _thumbnailService;
-
     [ObservableProperty]
     private StorageFolder? _inputFolder;
 
@@ -37,9 +35,8 @@ public partial class MainWindowViewModel
     [ObservableProperty]
     private ObservableCollection<PhotoViewModel> _photos = new();
 
-    public MainWindowViewModel(IThumbnailService thumbnailService)
+    public MainWindowViewModel()
     {
-        _thumbnailService = thumbnailService;
     }
 
     [ICommand]
@@ -52,6 +49,7 @@ public partial class MainWindowViewModel
         if (folder == null) return;
 
         Photos.Clear();
+        HasPhotos = false;
 
         List<string> fileTypeFilter = new();
         fileTypeFilter.Add(".jpg");
@@ -69,7 +67,7 @@ public partial class MainWindowViewModel
         IProgress<int> progress = new Progress<int>(x => LoadedFilesCount = x);
         FoundFilesCount = files.Count;
 
-        int reportingInterval = Math.Max(files.Count/100,1);
+        int reportingInterval = Math.Max(files.Count/100, 1);
 
         foreach (StorageFile file in files)
         {
@@ -85,7 +83,7 @@ public partial class MainWindowViewModel
 
             photoViewModels.Add(photoViewModel);
 
-            if((photoViewModels.Count % reportingInterval) == 0)
+            if ((photoViewModels.Count % reportingInterval) == 0)
             {
                 progress.Report(photoViewModels.Count);
             }
