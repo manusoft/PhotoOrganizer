@@ -32,7 +32,14 @@ public class PhotoViewModelBuilder
 
         if(_outputBaseFolderPath is not null && _outputFolderFormat is not null && photoViewModel.DateTaken is not null)
         {
-            photoViewModel.OutputFilePath = CreateDateTimeFormatedFolderPath(photoViewModel.DateTaken, _outputBaseFolderPath, _outputFolderFormat);
+            string? outputFilePath = CreateDateTimeFormatedFolderPath(
+                photoViewModel.DateTaken,
+                _outputBaseFolderPath,
+                _outputFolderFormat);
+
+            if (outputFilePath is not null) outputFilePath += $"\\{photoViewModel.InputFileName}";
+
+            photoViewModel.OutputFilePath = outputFilePath;
         }
 
         return photoViewModel;

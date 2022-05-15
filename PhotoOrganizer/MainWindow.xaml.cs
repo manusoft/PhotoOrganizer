@@ -12,9 +12,6 @@ namespace PhotoOrganizer;
 
 public sealed partial class MainWindow : Window
 {
-    //public RowDefinitionCollection? RowDefinitions { get; }
-    //public ColumnDefinitionCollection? ColumnDefinitions { get; }
-
     public MainWindow()
     {
         this.InitializeComponent();
@@ -42,6 +39,9 @@ public sealed partial class MainWindow : Window
         {
             ViewModel.UpdateInputFolderPathCommand?.Execute(selectedInputFolder?.Path);
             ViewModel.UpdateOutputFolderPathCommand?.Execute(selectedOutputFolder?.Path);
+
+            string folderFormat = CreateDateFolderFormat();
+            ViewModel.UpdateOutputFolderFormatCommand?.Execute(folderFormat);
 
             ViewModel.LoadPhotosCommand?.Execute(selectedInputFolder?.Path);
         }
