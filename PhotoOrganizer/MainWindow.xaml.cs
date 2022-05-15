@@ -12,6 +12,9 @@ namespace PhotoOrganizer;
 
 public sealed partial class MainWindow : Window
 {
+    //public RowDefinitionCollection? RowDefinitions { get; }
+    //public ColumnDefinitionCollection? ColumnDefinitions { get; }
+
     public MainWindow()
     {
         this.InitializeComponent();
@@ -111,5 +114,10 @@ public sealed partial class MainWindow : Window
     private void PhotosList_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args)
     {
         ViewModel?.PreparePhotoCommand?.ExecuteAsync(args.Index);
+    }
+
+    private void btnCancel_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel?.LoadPhotosCommand.Cancel();
     }
 }
